@@ -1,0 +1,136 @@
+.assignhp-player {
+    margin-bottom: 4px;
+    height: 50px;
+    width: 100%;
+    border-bottom: 1px solid #c9c7b8;
+    position:relative;
+}
+
+.assignhp-player .assignhp-avatar {
+    flex: 0 0 58px;
+    height: 50px;
+    display: inline-block;
+    border-left: 8px solid #C0C0C0;
+}
+
+.assignhp-player .assignhp-avatar.clickable {
+    cursor: pointer;
+}
+
+.assignhp-player.responded .assignhp-avatar {
+    border-left: 8px solid #468847;
+}
+
+.assignhp-player .assignhp-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.assignhp-details {
+    display: inline-block;
+    padding-top: 5px;
+    vertical-align: top;
+    flex: 0 0 240px;
+}
+
+.assignhp-character {
+    font-size: 10px;
+    max-height: 25px;
+    overflow: hidden;
+}
+
+.assignhp-button:hover > * {
+    cursor: pointer;
+    filter: drop-shadow( 0 0 5px red);
+}
+
+form .notes.break-start {
+    flex: 0 0 20px;
+}
+
+/* Items List*/
+.assign-heropoints .items-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    color: rgb(122, 121, 113);
+    overflow-y: hidden;
+    height: 100%;
+    max-height: 500px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+
+.assign-heropoints .items-list .item-list {
+    overflow-y: auto;
+    height: 100%; /* Unlocked this for the shop instructions */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    scrollbar-width: thin;
+    position: relative;
+}
+
+.assign-heropoints .items-list .item-header {
+    font-family: var(--mej-font-family);
+    font-size: var(--font-size-14);
+    text-align: center;
+    flex: 0 0 25px;
+    margin: 2px 0;
+    margin-left: 1px;
+    padding: 0;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.05);
+    border: 2px groove rgb(238, 237, 224);
+    color: rgb(25, 24, 19);
+    font-weight: bold;
+    flex-wrap: nowrap;
+}
+
+.assign-heropoints .items-list .item-controls {
+    flex: 0 0 30px;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 8px;
+}
+
+.assign-heropoints .items-list .item-header .item-controls {
+    justify-content: center;
+}
+
+.assign-heropoints .items-list .item {
+    align-items: center;
+    padding: 0 2px;
+    border-bottom: 1px solid rgb(201, 199, 184);
+    flex-wrap: nowrap;
+}
+
+.assign-heropoints .items-list .item-name {
+    flex: 1;
+    padding-left: 5px;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: var(--font-size-14);
+    text-align: left;
+    align-items: center;
+    border-bottom: 0px;
+}
+
+.assign-heropoints .items-list .item .item-name {
+    color: rgb(25, 24, 19);
+}
+
+.assign-heropoints .items-list .item input {
+    border-color: transparent;
+    color: rgb(25, 24, 19);
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.assign-heropoints .items-list .item input:hover {
+    border-color: unset;
+}

@@ -1,0 +1,13 @@
+<form class="flexcol" editable="{{editable}}" autocomplete="off" onsubmit="event.preventDefault();">
+    {{#each questions}}
+    <div class="form-group assignhp-question" data-question-id="{{this.id}}">
+        <label for="questions.{{this.id}}"><i class="fas {{this.icon}}"></i> {{this.name}}</label>
+        <div class="form-fields">
+            <input type="checkbox" class="question-checkbox" name="questions.{{this.id}}" {{#unless this.enabled}} disabled {{/unless}} {{#if this.value}} checked{{/if}} />
+        </div>
+    </div>
+    {{/each}}
+    <footer class="sheet-footer flexrow" style="flex-grow:0;">
+        <button type="submit" name="submit"><i class="fas fa-checkmark"></i> Confirm</button>
+    </footer>
+</form>

@@ -1,0 +1,48 @@
+<form class="flexcol" autocomplete="off" onsubmit="event.preventDefault();">
+    <div class="items-list">
+        <div class="item-header flexrow" style="position: relative;">
+            <div class="item-name">Player</div>
+            {{#each questions}}
+            <div class="item-controls">
+                <i class="fas {{this.icon}}" title="{{this.name}}"></i>
+            </div>
+            {{/each}}
+        </div>
+        <ol class="item-list" style="max-height: 500px;">
+            {{#each players}}
+            <li class="flexrow item assignhp-player {{#if responded}}responded{{/if}}" data-user-id="{{this.id}}">
+                <div class="item-name">
+                    <div class="assignhp-avatar">
+                        <img src="{{avatar}}" />
+                    </div>
+                    <div class="assignhp-details">
+                        <div class="assignhp-name">
+                            {{name}}
+                        </div>
+                        <div class="assignhp-character">{{character}}</div>
+                    </div>
+                </div>
+                {{#each ../questions}}
+                <div class="assignhp-question item-controls" data-question-id="{{this.id}}">
+                    <input type="checkbox" class="question-checkbox" name="questions.{{../this.id}}.{{this.id}}" {{#if (lookup ../response this.id)}} checked{{/if}} />
+                </div>
+                {{/each}}
+            </li>
+            {{/each}}
+        </ol>
+    </div>
+    <div class="form-group" style="flex-grow: 0">
+        <label>Assignment Type</label>
+        <div class="form-fields">
+            <select name="assignment">
+                <option value="add">Add to hero points</option>
+                <option value="remove">Remove from hero points</option>
+                <option value="set" selected>Set hero points</option>
+            </select>
+        </div>
+    </div>
+    <footer class="sheet-footer flexrow" style="flex-grow: 0">
+        <button type="button" class="cancel-button"><i class="fas fa-times"></i> Cancel</button>
+        <button type="submit" name="submit"><i class="fas fa-checkmark"></i> Assign</button>
+    </footer>
+</form>
