@@ -1,6 +1,60 @@
 <form class="flexcol" editable="{{editable}}">
-    
-    <footer class="sheet-footer flexrow">
-        <button type="button">OK</button>
+
+    <div class="items-list">
+        <div class="item-header flexrow" style="position: relative;">
+            <div class="item-name">
+                <h3 class="noborder">Question</h3>
+            </div>
+            <div class="item-controls">
+                Icon
+            </div>
+            <div class="item-controls">
+                Enabled
+            </div>
+            <div class="item-controls">
+                Visible
+            </div>
+            <div class="item-controls">
+                Default
+            </div>
+            <div class="item-controls">
+                <a class="item-control item-add text"><i class="fas fa-plus"></i> Add</a>
+            </div>
+        </div>
+        <ol class="item-list" style="max-height: 500px;">
+            {{#each questions}}
+            <li class="flexrow item" data-question-id="{{this.id}}">
+                <div class="item-name">
+                    <input type="hidden" name="questions.{{this.id}}.id" value="{{this.id}}" />
+                    <input type="text" name="questions.{{this.id}}.name" value="{{this.name}}" />
+                </div>
+                <div class="item-controls">
+                    <input type="hidden" name="questions.{{this.id}}.icon" value="{{this.icon}}" />
+                    <a class="item-control item-icon"><i class="fas {{this.icon}}"></i></a>
+                </div>
+                <div class="item-controls">
+                    <input type="checkbox" data-value="enabled" name="questions.{{this.id}}.enabled" {{#if this.enabled}} checked{{/if}} />
+                </div>
+                <div class="item-controls">
+                    <input type="checkbox" data-value="visible" name="questions.{{this.id}}.visible" {{#if this.visible}} checked{{/if}} />
+                </div>
+                <div class="item-controls">
+                    <input type="checkbox" data-value="default" name="questions.{{this.id}}.default" {{#if this.default}} checked{{/if}} />
+                </div>
+                <div class="item-controls">
+                    <a class="item-control item-delete"><i class="fas fa-trash"></i></a>
+                </div>
+            </li>
+            {{/each}}
+        </ol>
+    </div>
+
+    <footer class="sheet-footer flexrow" style="flex-grow: 0;">
+        <button type="button" name="submit">
+            <i class="far fa-save"></i> {{localize 'AssignHeroPoint.SaveChanges'}}
+        </button>
+        <button type="button" name="reset">
+            <i class="fas fa-undo"></i> {{localize 'AssignHeroPoint.ResetDefaults'}}
+        </button>
     </footer>
 </form>

@@ -1,9 +1,20 @@
 <form class="flexcol" autocomplete="off" onsubmit="event.preventDefault();">
+    <div class="flexrow" style="flex-grow: 0">
+        <button type="button" class="show-players{{#if showing}} active{{/if}}"><i class="fas fa-users"></i> Show To Players</button>
+        <button type="button" class="set-timer"><i class="fas fa-clock"></i> Set Timer</button>
+    </div>
+    {{#if remaining}}
+    <div class="form-group" style="flex-grow: 0">
+        <div class="form-fields">
+            <input class="remaining-timer" style="text-align: center;" type="text" disabled />
+        </div>
+    </div>
+    {{/if}}
     <div class="items-list">
         <div class="item-header flexrow" style="position: relative;">
             <div class="item-name">Player</div>
             {{#each questions}}
-            <div class="item-controls">
+            <div class="item-controls{{#unless this.visible}} question-hidden{{/unless}}{{#unless this.enabled}} question-disabled{{/unless}}">
                 <i class="fas {{this.icon}}" title="{{this.name}}"></i>
             </div>
             {{/each}}

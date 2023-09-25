@@ -20,6 +20,8 @@ export const registerSettings = function () {
 			{ id: 'R9IX48qIBUU6lt9X', icon: 'fa-circle-h', name: "One at the start", enabled: false, default: true },
 			{ id: 'CxFByjFnkecEkftg', icon: 'fa-book', name: "Notes last session" },
 			{ id: 'aIseJ9kKVDmWOoH1', icon: 'fa-pencil', name: "Notes this session" },
+			{ id: 'EbrY3d4bxRVuvQjr', icon: 'fa-user', name: "In Character", visible: false },
+			{ id: 'iM69w6hQ9RjmOjOD', icon: 'fa-bullhorn', name: "Oral Recap", visible: false },
 		],
 		type: Array,
 	});
@@ -52,4 +54,10 @@ export const registerSettings = function () {
 		type: Array,
 	});
 
+	game.settings.register(modulename, "remaining", {
+		scope: "world",
+		config: false,
+		default: null,
+		type: Object,
+	});
 }

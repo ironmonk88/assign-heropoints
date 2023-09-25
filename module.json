@@ -1,16 +1,16 @@
 {
   "title": "Assign Hero Points",
   "description": "Interface to allow for assigning hero points as the start of a session based on criteria.  As well as providing a reminder to assign hero points after time has passed in game play",
-  "version": "11.00",
+  "version": "11.01",
   "authors": [
     {
       "name": "IronMonk",
       "discord": "ironmonk88#4075",
-	  "flags": {
-		"github": "ironmonk88",
-		"patreon": "ironmonk",
-		"ko-fi": "ironmonk88"
-	  }
+      "flags": {
+        "github": "ironmonk88",
+        "patreon": "ironmonk",
+        "ko-fi": "ironmonk88"
+      }
     }
   ],
   "socket": true,
@@ -27,8 +27,18 @@
   "styles": [
     "css/assign-heropoints.css"
   ],
+  "relationships": {
+    "requires": [
+      {
+        "id": "pf2e",
+        "type": "system",
+        "manifest": "https://raw.githubusercontent.com/foundryvtt/pf2e/master/system.json",
+        "compatibility": {}
+      }
+    ]
+  },
   "url": "https://github.com/ironmonk88/assign-heropoints",
-  "download": "https://github.com/ironmonk88/assign-heropoints/archive/11.00.zip",
+  "download": "https://github.com/ironmonk88/assign-heropoints/archive/11.01.zip",
   "manifest": "https://github.com/ironmonk88/assign-heropoints/releases/latest/download/module.json",
   "bugs": "https://github.com/ironmonk88/assign-heropoints/issues",
   "allowBugReporter": true,

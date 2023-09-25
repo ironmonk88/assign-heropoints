@@ -23,10 +23,14 @@ export class PlayerAssignApplication extends FormApplication {
         let responses = setting("responses");
         let response = responses[game.user.id] || {};
 
-        questions.forEach((q) => {
-            q.value = response[q.id] ?? q.default ?? false;
-            q.enabled = q.enabled ?? true;
-        });
+        questions = questions
+            .filter((q) => q.visible !== false)
+            .map((q) => {
+                return Object.assign({}, q, {
+                    value: response[q.id] ?? q.default ?? false,
+                    enabled: q.enabled ?? true
+                });
+            });
 
         console.log("Player Assign", questions);
 

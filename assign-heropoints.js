@@ -38,6 +38,9 @@ export class AssignHeroPoints {
         if (setting("showing")) {
             AssignHeroPoints.showApp();
         }
+        if (game.user.isGM) {
+            AssignHeroPoints.setTimer();
+        }
     }
 
     static emit(action, args = {}) {
@@ -51,13 +54,48 @@ export class AssignHeroPoints {
         AssignHeroPoints[data.action].call(AssignHeroPoints, data);
     }
 
+    static setTimer() {
+        let remaining = setting("remaining");
+        if (remaining != null) {
+            let time = new Date(remaining) - Date.now();
+
+            if (time > 0) {
+                AssignHeroPoints.remainingTimer = window.setTimeout(() => {
+                    // Let the GM know to assign hero points
+                    ChatMessage.create({
+                        content: `
+<div>
+<h3 class="noborder">${i18n("AssignHeroPoints.AssignHeroPoints")}</h3>
+<p>${i18n("AssignHeroPoints.AssignHeroPointsMessage")}</p>
+<button type="button" class="assign-heropoints-to-player">${i18n("AssignHeroPoints.AssignHeroPointsButton")}</button>
+</div>
+                        `,
+                        whisper: ChatMessage.getWhisperRecipients("GM")
+                    });
+                    $('#players .assignhp-button').addClass("active");
+                    window.setTimeout(() => {
+                        $('#players .assignhp-button').removeClass("active");
+                        game.settings.set("assign-heropoints", "remaining", null);
+                        if (game.user.isGM && AssignHeroPoints.app != null)
+                            AssignHeroPoints.app.render(true);
+                    }, 5000);
+                }, time);
+            } else {
+                window.clearInterval(AssignHeroPoints.remainingTimer);
+                game.settings.set("assign-heropoints", "remaining", null);
+            }
+        } else if (AssignHeroPoints.remainingTimer) {
+            window.clearInterval(AssignHeroPoints.remainingTimer);
+        }
+    }
+
     static async assignPoints() {
         if (AssignHeroPoints.app == null && !setting("showing")) {
-            await game.settings.set("assign-heropoints", "showing", true);
             await game.settings.set("assign-heropoints", "responses", {});
             await game.settings.set("assign-heropoints", "responded", {});
         }
-        AssignHeroPoints.emit("showApp");
+
+        AssignHeroPoints.showApp();
     }
 
     static async showApp() {
@@ -66,20 +104,18 @@ export class AssignHeroPoints {
         else
             AssignHeroPoints.app.render(true);
 
-        if (!game.user.isGM)
-            ui.players.render();
+        ui.players.render();
     }
 
     static async closeApp() {
-        if (AssignHeroPoints.app != null && AssignHeroPoints.app.rendered) {
+        if (AssignHeroPoints.app != null && AssignHeroPoints.app.rendered && !game.user.isGM) {
             AssignHeroPoints.app.close({ ignore: true }).then(() => {
                 AssignHeroPoints.app = null;
             });
         } else
             AssignHeroPoints.app = null;
 
-        if (!game.user.isGM)
-            ui.players.render();
+        ui.players.render();
     }
 
     static async updatePlayerQuestions(data) {
@@ -110,6 +146,21 @@ export class AssignHeroPoints {
     static refreshPlayerUI() {
         ui.players.render();
     }
+
+    static async assignPointsToPlayers(event) {
+        // loop through all players and assign hero points to their character
+        for (let user of game.users.filter(u => !!u && u.character && u.isGM === false)) {
+            let character = user.character;
+            let heroPoints = getProperty(character, 'system.resources.heroPoints.value') ?? 0;
+            await character.update({ 'system.resources.heroPoints.value': Math.min(heroPoints + 1, 3) });
+        }
+
+        // get the content of the message and change the button to text saying the points have been assigned
+        let content = $(this.content);
+        $('.assign-heropoints-to-player', content).after("<p><i>Hero Points have been assigned</i></p>");
+        $('.assign-heropoints-to-player', content).remove();
+        this.update({ content: content[0].outerHTML });
+    }
 }
 
 Hooks.once('init', AssignHeroPoints.init);
@@ -123,8 +174,14 @@ Hooks.on('renderPlayerList', async (playerList, html, data) => {
 
     if (game.user.isGM || (!game.user.isGM && setting("showing"))) {
         $('<h3>').addClass('assignhp-button')
-            .append(`<div><i class="fas fa-circle-h"></i> ${i18n("AssignHeroPoint.HeroPoints")}</div>`)
+            .append(`<div><i class="fas fa-circle-h"></i> ${i18n("AssignHeroPoint.HeroPoints")}${game.user.isGM && setting("showing") ? '<i style="float:right;" class="fas fa-users"></i>' : ''}</div>`)
             .insertAfter($('h3:last', html))
             .click(game.user.isGM ? AssignHeroPoints.assignPoints.bind() : AssignHeroPoints.showApp.bind());
+    }
+});
+
+Hooks.on('renderChatMessage', (message, html, data) => {
+    if (message.isAuthor && message.data.content.includes("assign-heropoints-to-player")) {
+        $('.assign-heropoints-to-player', html).click(AssignHeroPoints.assignPointsToPlayers.bind(message));
     }
 });
