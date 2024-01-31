@@ -152,7 +152,8 @@ export class AssignHeroPoints {
         for (let user of game.users.filter(u => !!u && u.character && u.isGM === false)) {
             let character = user.character;
             let heroPoints = getProperty(character, 'system.resources.heroPoints.value') ?? 0;
-            await character.update({ 'system.resources.heroPoints.value': Math.min(heroPoints + 1, 3) });
+            let maxPoints = getProperty(character, 'system.resources.heroPoints.max') ?? 3;
+            await character.update({ 'system.resources.heroPoints.value': Math.min(heroPoints + 1, maxPoints) });
         }
 
         // get the content of the message and change the button to text saying the points have been assigned
@@ -174,14 +175,14 @@ Hooks.on('renderPlayerList', async (playerList, html, data) => {
 
     if (game.user.isGM || (!game.user.isGM && setting("showing"))) {
         $('<h3>').addClass('assignhp-button')
-            .append(`<div><i class="fas fa-circle-h"></i> ${i18n("AssignHeroPoint.HeroPoints")}${game.user.isGM && setting("showing") ? '<i style="float:right;" class="fas fa-users"></i>' : ''}</div>`)
+            .append(`<div><i class="fas fa-circle-h"></i> ${i18n("AssignHeroPoints.HeroPoints")}${game.user.isGM && setting("showing") ? '<i style="float:right;" class="fas fa-users"></i>' : ''}</div>`)
             .insertAfter($('h3:last', html))
             .click(game.user.isGM ? AssignHeroPoints.assignPoints.bind() : AssignHeroPoints.showApp.bind());
     }
 });
 
 Hooks.on('renderChatMessage', (message, html, data) => {
-    if (message.isAuthor && message.data.content.includes("assign-heropoints-to-player")) {
+    if (message.isAuthor && message.content.includes("assign-heropoints-to-player")) {
         $('.assign-heropoints-to-player', html).click(AssignHeroPoints.assignPointsToPlayers.bind(message));
     }
 });

@@ -1,7 +1,7 @@
 {
   "title": "Assign Hero Points",
   "description": "Interface to allow for assigning hero points as the start of a session based on criteria.  As well as providing a reminder to assign hero points after time has passed in game play",
-  "version": "11.01",
+  "version": "11.02",
   "authors": [
     {
       "name": "IronMonk",
@@ -38,7 +38,7 @@
     ]
   },
   "url": "https://github.com/ironmonk88/assign-heropoints",
-  "download": "https://github.com/ironmonk88/assign-heropoints/archive/11.01.zip",
+  "download": "https://github.com/ironmonk88/assign-heropoints/archive/11.02.zip",
   "manifest": "https://github.com/ironmonk88/assign-heropoints/releases/latest/download/module.json",
   "bugs": "https://github.com/ironmonk88/assign-heropoints/issues",
   "allowBugReporter": true,

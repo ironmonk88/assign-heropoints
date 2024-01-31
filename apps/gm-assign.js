@@ -70,6 +70,8 @@ export class GMAssignApplication extends FormApplication {
         $('button.set-timer', html).click(this.setTime.bind(this));
         $('button.show-players', html).click(this.showToPlayers.bind(this));
 
+        $('.assignhp-avatar', html).on('dblclick', this.OpenActor.bind(this));
+
         if (setting("remaining")) {
             if (this.remainingTimer)
                 window.clearInterval(this.remainingTimer);
@@ -145,6 +147,14 @@ export class GMAssignApplication extends FormApplication {
         $("li[data-user-id='" + userId + "']", this.element).addClass("responded");
     }
 
+    OpenActor(event) {
+        let userId = event.currentTarget.closest('.assignhp-player').dataset.userId;
+        let user = game.users.get(userId);
+        let character = user?.character;
+        if (character)
+            character.sheet.render(true);
+    }
+
     async _updateObject(event, formData) {
         let data = foundry.utils.expandObject(formData);
         let updates = [];
@@ -156,10 +166,11 @@ export class GMAssignApplication extends FormApplication {
                     if (v === true) acc++;
                     return acc;
                 }, 0);
+                let maxPoints = getProperty(character, 'system.resources.heroPoints.max') ?? 3;
                 if (data.assignment === "set") {
-                    updates.push({ _id: character.id, 'system.resources.heroPoints.value': totalPoints });
+                    updates.push({ _id: character.id, 'system.resources.heroPoints.value': Math.min(totalPoints, maxPoints) });
                 } else if (data.assignment === "add") {
-                    updates.push({ _id: character.id, 'system.resources.heroPoints.value': Math.min((getProperty(character, 'system.resources.heroPoints.value') ?? 0) + totalPoints, 3) });
+                    updates.push({ _id: character.id, 'system.resources.heroPoints.value': Math.min((getProperty(character, 'system.resources.heroPoints.value') ?? 0) + totalPoints, maxPoints) });
                 } else if (data.assignment === "remove") {
                     updates.push({ _id: character.id, 'system.resources.heroPoints.value': Math.max((getProperty(character, 'system.resources.heroPoints.value') ?? 0) - totalPoints, 0) });
                 }

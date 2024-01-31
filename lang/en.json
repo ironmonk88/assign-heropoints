@@ -1,8 +1,8 @@
 {
   "AssignHeroPoints.Title": "Assign Hero Points",
-  "AssignHeroPoint.HeroPoints": "Hero Points",
-  "AssignHeroPoint.SaveChanges": "Save Changes",
-  "AssignHeroPoint.ResetDefaults": "Reset Defaults",
+  "AssignHeroPoints.HeroPoints": "Hero Points",
+  "AssignHeroPoints.SaveChanges": "Save Changes",
+  "AssignHeroPoints.ResetDefaults": "Reset Defaults",
   "AssignHeroPoints.EditQuestions": "Edit Questions",
   "AssignHeroPoints.AssignHeroPoints": "Time to Assign Hero Points",
   "AssignHeroPoints.AssignHeroPointsMessage": "Time has elapsed to assign hero points.  Please assign hero points to your players",
